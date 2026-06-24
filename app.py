@@ -375,7 +375,7 @@ def _handle_ingest(pdf_files, urls_text):
 # ─────────────────────────────────────────────────────────────────────────────
 # GRADIO UI
 # ─────────────────────────────────────────────────────────────────────────────
-with gr.Blocks(title="AI Voice Agent") as demo:
+with gr.Blocks(title="AI Voice Agent", api_open=False) as demo:
 
     gr.Markdown("# 🦜 AI Voice Agent\nUpload documents first, then query via voice or text.")
 
@@ -389,7 +389,8 @@ with gr.Blocks(title="AI Voice Agent") as demo:
         ingest_out = gr.Textbox(label="Status", interactive=False, lines=6)
         ingest_btn.click(_handle_ingest,
                          inputs=[pdf_upload, url_box],
-                         outputs=[ingest_out])
+                         outputs=[ingest_out],
+                         api_name=False)
 
     with gr.Tab("🎙️ Voice Chat"):
         gr.Markdown("Record your query. The agent replies in text and audio.")
@@ -399,7 +400,8 @@ with gr.Blocks(title="AI Voice Agent") as demo:
         voice_audio = gr.Audio(label="Response Audio")
         voice_btn.click(_handle_audio,
                         inputs=[audio_in],
-                        outputs=[voice_text, voice_audio])
+                        outputs=[voice_text, voice_audio],
+                        api_name=False)
 
     with gr.Tab("💬 Text Chat"):
         gr.Markdown("Type your query. The agent replies in text and audio.")
@@ -410,17 +412,21 @@ with gr.Blocks(title="AI Voice Agent") as demo:
         text_audio = gr.Audio(label="Response Audio")
         text_btn.click(_handle_text,
                        inputs=[text_in],
-                       outputs=[text_out, text_audio])
+                       outputs=[text_out, text_audio],
+                       api_name=False)
 
     with gr.Row():
         session_btn    = gr.Button("🔄 New Conversation Session")
         session_status = gr.Textbox(label="Session", interactive=False,
                                     value=f"Thread: {_current_thread_id}")
-        session_btn.click(_handle_new_session, outputs=[session_status])
+        session_btn.click(_handle_new_session,
+                          outputs=[session_status],
+                          api_name=False)
 
 
 if __name__ == "__main__":
     demo.launch(
-        server_name="0.0.0.0",   # required for HF Spaces — binds to all interfaces
-        server_port=7860,         # HF Spaces always expects port 7860
+        server_name="0.0.0.0",
+        server_port=7860,
+        ssr_mode=False,        # disables SSR which triggers the api/info calls
     )
