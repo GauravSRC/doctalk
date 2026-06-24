@@ -1,0 +1,22 @@
+# Secrets — never push this
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
+
+# One-time utility script — not needed on HF Spaces
+download_model.py
