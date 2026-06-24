@@ -375,7 +375,7 @@ def _handle_ingest(pdf_files, urls_text):
 # ─────────────────────────────────────────────────────────────────────────────
 # GRADIO UI
 # ─────────────────────────────────────────────────────────────────────────────
-with gr.Blocks(title="AI Voice Agent", api_open=False) as demo:
+with gr.Blocks(title="AI Voice Agent") as demo:
 
     gr.Markdown("# 🦜 AI Voice Agent\nUpload documents first, then query via voice or text.")
 
